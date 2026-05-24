@@ -13,10 +13,16 @@ import sys
 from datetime import datetime
 import csv
 import time
+import argparse
 
 # Global Variables:
 FILE = "expenses.csv"
 NOW = str(datetime.now().replace(microsecond=0))
+
+def on_load():
+    parser = argparse.ArgumentParser()
+    parser.add_argument()
+    
 
 
 def error_messages(*messages):
@@ -62,12 +68,18 @@ DATA = load_file()
 # Export a filter output as csv file
 # Export expenses as csv output
 
-def add_expense(expense)
+## Create argparser for arguments that can be used and entered into the program. This helps with data and input validation the idea is to be able to parse arguments into temporary arg variables which can then be exported as a python variable to then be used for data santisation or validation and then input that in to the csv.
+
+
+def add_expense(expense):
+    pass
+
 
 def main():
+    on_load()
     if len(sys.argv) < 2:
         error_messages("Usage: expense-tracker.py [option] [option] [option] [option]")
-    elif len(sys.argv) > 1 and sys.argv[1].lower() == 'add':
+    elif len(sys.argv) > 1 and sys.argv[1].lower() == "add":
         add_expense()
 
 
