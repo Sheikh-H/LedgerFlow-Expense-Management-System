@@ -1,13 +1,3 @@
-"""
-This is the first version of the expense tracker that I am making for one of the projects on roadmap.sh. I would like to start using other file formats as I am familiar with using SQLite and JSON already.
-I will upload both copies and link them here too and should be in my repo's.
-
-The load function and the save data function was made with the help of AI and it wasn't all that difficult to make but with CSV's having so many options. I would say that I would want to learn all the funcitons inside this method before I would say I can code comfortably with this.
-
->>> expense-tracker 2 link.
-
-"""
-
 import os
 import sys
 from datetime import datetime
@@ -19,10 +9,55 @@ import argparse
 FILE = "expenses.csv"
 NOW = str(datetime.now().replace(microsecond=0))
 
+
 def on_load():
-    parser = argparse.ArgumentParser()
-    parser.add_argument()
-    
+    clear_screen()
+    parser = argparse.ArgumentParser(
+        prog="expense-tracker.py",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        description=f"Welcome to the Python Expense Tracker CLI. This program was made as part of one of the projects in Roadmap.sh to learn the Python programming language.",
+        epilog="Use -h for help. GitHub: Sheikh-H",
+    )
+
+    subparsers = parser.add_subparsers(required=True, dest="InitialCommand")
+    add_parser = subparsers.add_parser(
+        name="add",
+        help="Add a new expense - 4 positional arguments [--description, --amount, --date, --category]",
+    )
+    add_parser.add_argument("--description", required=True, type=str)
+    add_parser.add_argument("--amount", required=True, type=float)
+    add_parser.add_argument("--category", required=True, type=str)
+    add_parser.add_argument("--date", required=True, type=str)
+    update_parser = subparsers.add_parser(
+        name="update",
+        help="Update an existing expense - 5 optional arguments [--id, --description, --amount, --date, --category]",
+    )
+    update_parser.add_argument("--id", required=True, type=int)
+    update_parser.add_argument("--description", type=str)
+    update_parser.add_argument("--amount", type=float)
+    update_parser.add_argument("--category", type=str)
+    update_parser.add_argument("--date", type=str)
+
+    view_parser = subparsers.add_parser(
+        name="view",
+        help="View expenses - 5 optional arguments [--id, --description, --category, --amount]",
+    )
+    view_parser.add_argument("--description", required=False, type=str)
+    view_parser.add_argument("--amount", required=False, type=float)
+    view_parser.add_argument("--category", required=False, type=str)
+    view_parser.add_argument("--date", required=False, type=str)
+    view_parser.add_argument("--id", required=False, type=int)
+
+    delete_parser = subparsers.add_parser(
+        name="delete",
+        help="Delete an expense - 1 of 2 optional arguments [--id, --description]",
+    )
+    delete_parser_group = delete_parser.add_mutually_exclusive_group(required=True)
+
+    delete_parser_group.add_argument("--description", type=str)
+    delete_parser_group.add_argument("--id", type=int)
+
+    return parser, parser.parse_args()
 
 
 def error_messages(*messages):
@@ -35,7 +70,7 @@ def error_messages(*messages):
 
 
 def load_file(file=FILE):
-    fieldnames = ["ID", "Date", "Description", "Amount"]
+    fieldnames = ["ID", "Date", "Description", "Amount", "Category"]
     if not os.path.exists(file):
         with open(file, "w") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames, dialect="excel")
@@ -46,7 +81,7 @@ def load_file(file=FILE):
 
 
 def save_data(DATA, file=FILE):
-    fieldnames = ["ID", "Date", "Description", "Amount"]
+    fieldnames = ["ID", "Date", "Description", "Amount", "Category"]
     with open(file, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -60,6 +95,22 @@ def clear_screen():
 
 DATA = load_file()
 
+
+def add_expense(expense):
+    pass
+
+
+def main():
+    parser, args = on_load()
+    if args.InitialCommand == "update":
+        if not any([args.description, args.amount, args.category, args.date]):
+            print(parser.error())
+
+
+if __name__ == "__main__":
+    main()
+
+
 # Add an expense
 # Delete an expense
 # View all expenses
@@ -67,21 +118,3 @@ DATA = load_file()
 # Add expense categories and filter by categories for view
 # Export a filter output as csv file
 # Export expenses as csv output
-
-## Create argparser for arguments that can be used and entered into the program. This helps with data and input validation the idea is to be able to parse arguments into temporary arg variables which can then be exported as a python variable to then be used for data santisation or validation and then input that in to the csv.
-
-
-def add_expense(expense):
-    pass
-
-
-def main():
-    on_load()
-    if len(sys.argv) < 2:
-        error_messages("Usage: expense-tracker.py [option] [option] [option] [option]")
-    elif len(sys.argv) > 1 and sys.argv[1].lower() == "add":
-        add_expense()
-
-
-if __name__ == "__main__":
-    main()
