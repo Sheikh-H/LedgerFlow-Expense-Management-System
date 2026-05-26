@@ -192,7 +192,7 @@ def update_expense(
     if description != None:
         count = 0
         for row in DATA:
-            if str(row["Description"]).lower() == description.lower():
+            if row["Description"].lower().strip() == description.lower().strip():
                 count += 1
         if count > 1:
             print(
@@ -200,29 +200,29 @@ def update_expense(
             )
             print("Here is a list of all the expenses with the same description:")
             for row in DATA:
-                if str(row["Description"]).lower() == description.lower().strip():
+                if row["Description"].lower().strip() == description.lower().strip():
                     print("-" * 50)
                     print(f"ID: {row['ID']}\t\t\t\tDate: {row['Date']}")
                     print(f"Description: {row['Description']}")
                     print(f"Category: {row['Category']}")
                     print(f"Amount: £{row['Amount']}")
-            if count == 1:
-                for i, row in enumerate(DATA):
-                    if (
-                        str(row["Description"]).lower().strip()
-                        == description.lower().strip()
-                    ):
-                        expense.append(row)
-                        if new_description != None:
-                            row["Description"] = new_description.strip()
-                        if new_amount != None:
-                            row["Amount"] = float(new_amount, 2)
-                        if new_category != None:
-                            row["Category"] = new_category.strip()
-                        if new_date != None:
-                            formatted_date = datetime.strptime(new_date, "%d/%m/%Y").date()
-                            row["Date"] = formatted_date
-                        break
+        if count == 1:
+            for i, row in enumerate(DATA):
+                if (
+                    row["Description"].lower().strip()
+                    == description.lower().strip()
+                ):
+                    expense.append(row)
+                    if new_description != None:
+                        row["Description"] = new_description.strip()
+                    if new_amount != None:
+                        row["Amount"] = new_amount
+                    if new_category != None:
+                        row["Category"] = new_category.strip()
+                    if new_date != None:
+                        formatted_date = datetime.strptime(new_date, "%d/%m/%Y").date()
+                        row["Date"] = formatted_date
+                    break
     save_data(DATA, FILE)
     if expense:
         error_messages(f"Expense '{expense[0]['Description']}' has been updated!")
