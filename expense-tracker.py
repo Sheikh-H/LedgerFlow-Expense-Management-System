@@ -172,21 +172,13 @@ def update_expense(
                 if new_description != None:
                     print(row["Description"])
                     row["Description"] = new_description
-                else:
-                    row["Description"] = row["Description"]
                 if new_amount != None:
                     row["Amount"] = new_amount
-                else:
-                    row["Amount"] = row["Amount"]
                 if new_date != None:
                     formatted_date = datetime.strptime(new_date, "%d/%m/%Y").date()
                     row["Date"] = formatted_date
-                else:
-                    row["Date"] = row["Date"]
                 if new_category != None:
                     row["Category"] = new_category
-                else:
-                    row["Category"] = row["Category"]
                 break
     if description is not None:
         count = 0
