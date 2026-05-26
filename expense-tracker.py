@@ -30,10 +30,11 @@ def on_load():
     add_parser.add_argument("--date", required=True, type=str)
     update_parser = subparsers.add_parser(
         name="update",
-        help="Update an existing expense - 5 optional arguments [--id, --description, --amount, --date, --category]",
+        help="Update an existing expense - 5 optional arguments [--id, --description, --new-description, --amount, --date, --category]",
     )
     update_parser.add_argument("--id", required=True, type=int)
     update_parser.add_argument("--description", type=str)
+    update_parser.add_argument("--newdescription", type=str)
     update_parser.add_argument("--amount", type=float)
     update_parser.add_argument("--category", type=str)
     update_parser.add_argument("--date", type=str)
@@ -148,31 +149,106 @@ def delete_expense(expense_id, description):
                     print(f"Description: {row['Description']}")
                     print(f"Category: {row['Category']}")
                     print(f"Amount: £{row['Amount']}")
-            else:
-                exit()
     save_data(DATA, FILE)
     if expense:
         print(f"Expense '{expense[0]['Description']}' Deleted!")
     else:
         error_messages("Unable to delete this, try again")
 
-def update_expense(expense_id, description, new_description, new_amount, new_date, new_category):
-    # if any of the parameters are empty
-        #ignore the variable and use the rest.
-        
+
+def update_expense(
+    expense_id, description, new_description, new_amount, new_date, new_category
+):
+    DATA = load_file()
+    expense = []
+    if expense_id and description:
+        error_messages(
+            "Please use either expense id or expense description to search, refer to manual [-h]"
+        )
+    if expense_id != None:
+        for row in DATA:
+            if int(row["ID"]) == int(expense_id):
+                expense.append(row)
+                if new_description != None:
+                    row["Description"] = new_description
+                if new_amount != None:
+                    row["Amount"] = new_amount
+                if new_date != None:
+                    row["Date"] = new_date
+                if new_category != None:
+                    row["Category"] = new_category
+                break
+    if description != None:
+        count = 0
+        for row in DATA:
+            if row["Description"].lower() == description.lower():
+                count += 1
+        if count > 1:
+            print(
+                "You have more than one expense with the same description, please use expense id"
+            )
+            print("Here is a list of all the expenses with the same description:")
+            for row in DATA:
+                if row["Description"].lower() == description.lower():
+                    print("-" * 50)
+                    print(f"ID: {row['ID']}\t\t\t\tDate: {row['Date']}")
+                    print(f"Description: {row['Description']}")
+                    print(f"Category: {row['Category']}")
+                    print(f"Amount: £{row['Amount']}")
+            if count == 1:
+                for row in DATA:
+                    if row["Description"].lower() == description.lower():
+                        expense.append(row)
+                        if new_description != None:
+                            row["Description"] = new_description
+                        if new_amount != None:
+                            row["Amount"] = new_amount
+                        if new_category != None:
+                            row["Category"] = new_category
+                        if new_date != None:
+                            row["Date"] = new_date
+                        break
+    if expense:
+        error_messages(f"Expense '{expense[0]['Description']}' has been updated!")
+        save_data(DATA, FILE)
+
 
 def main():
     parser, args = on_load()
     if args.InitialCommand == "add":
-        if not any([args.description, args.amount, args.category, args.date]):
-            print(parser.error())
+        if not [args.description, args.amount, args.category, args.date]:
+            print(
+                parser.error(
+                    "Please enter all the fields needed to generate a new expense!"
+                )
+            )
         else:
             add_expense(args.description, args.amount, args.category, args.date)
-    if args.InitialCommand == "delete":
+    elif args.InitialCommand == "delete":
         if not any([args.id, args.description]):
-            print(parser.error())
+            print(
+                parser.error(
+                    "Please enter the ID or description of the expense you would like to delete!"
+                )
+            )
         else:
             delete_expense(args.id, args.description)
+    elif args.InitialCommand == "update":
+        if not any([args.description, args.amount, args.category, args.date]):
+            print(
+                parser.error(
+                    "Please enter the fields that you would like to update for this expense!"
+                )
+            )
+        else:
+            update_expense(
+                args.id,
+                args.description,
+                args.new_description,
+                args.amount,
+                args.date,
+                args.category,
+            )
 
 
 if __name__ == "__main__":
