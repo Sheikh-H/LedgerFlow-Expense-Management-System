@@ -245,8 +245,9 @@ def export_to_csv(expenses):
         with open("filtered_expense.csv", "w") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
-            for expense in expenses:
-                writer.writerows(expense)
+            for key, value in enumerate(expenses):
+                writer.writerow(value)
+                
     else:
         exit()
 
@@ -261,25 +262,31 @@ def view_by(
     date=None,
 ):
     DATA = load_file()
-    # After this function is up and working, I would like for this to be using multiple filters to load different results. There was a method provided by AI, but I would like to make it on my own way.
+    results = []
     if expense_id is not None:
         print("Here is the expenses with that ID:")
         time.sleep(2)
         for row in DATA:
             if int(row["ID"]) == expense_id:
+                results.append(row)
                 print(row)
+        export_to_csv(results)
     if description is not None:
         print("Here is the expenses with that description:")
         time.sleep(2)
         for row in DATA:
             if row["Description"].lower() == description.lower():
+                results.append(row)
                 print(row)
+        export_to_csv(results)
     if category is not None:
         print(f"Here are the expenses in '{category}':")
         time.sleep(2)
         for row in DATA:
             if row["Category"].lower() == category.lower().strip():
+                results.append(row)
                 print(row)
+        export_to_csv(results)
     if date is not None:
         print(f"Here are the expenses made on '{date}'")
         formatted_date = datetime.strptime(date, "%d-%m-%Y").date()
@@ -287,6 +294,8 @@ def view_by(
         for row in DATA:
             if datetime.strptime(row["Date"], "%Y-%m-%d").date() == formatted_date:
                 print(row)
+                results.append(row)
+        export_to_csv(results)
     if year is not None:
         print(f"Here are all the expenses made in year '{year}'")
         formatted_year = datetime.strptime(year, "%Y").year
@@ -294,6 +303,8 @@ def view_by(
         for row in DATA:
             if datetime.strptime(row["Date"], "%Y-%m-%d").year == formatted_year:
                 print(row)
+                results.append(row)
+        export_to_csv(results)
     if day is not None:
         str_day = ""
         if day == "1":
@@ -310,6 +321,8 @@ def view_by(
         for row in DATA:
             if datetime.strptime(row["Date"], "%Y-%m-%d").day == formatted_day:
                 print(row)
+                results.append(row)
+        export_to_csv(results)
     if month is not None:
         if month.isdigit():
             formatted_month = datetime.strptime(month, "%m").month
@@ -321,6 +334,8 @@ def view_by(
             for row in DATA:
                 if datetime.strptime(row["Date"], "%Y-%m-%d").month == formatted_month:
                     print(row)
+                    results.append(row)
+            export_to_csv(row)
 
         else:
             if len(month) > 3:
@@ -330,8 +345,13 @@ def view_by(
                 time.sleep(2)
 
                 for row in DATA:
-                    if datetime.strptime(row["Date"], "%Y-%m-%d").month == formatted_month:
+                    if (
+                        datetime.strptime(row["Date"], "%Y-%m-%d").month
+                        == formatted_month
+                    ):
                         print(row)
+                        results.append(row)
+                export_to_csv(results)
 
             elif len(month) == 3:
                 formatted_month = datetime.strptime(month, "%b").month
@@ -341,8 +361,13 @@ def view_by(
                 time.sleep(2)
 
                 for row in DATA:
-                    if datetime.strptime(row["Date"], "%Y-%m-%d").month == formatted_month:
+                    if (
+                        datetime.strptime(row["Date"], "%Y-%m-%d").month
+                        == formatted_month
+                    ):
                         print(row)
+                        results.append(row)
+                export_to_csv(results)
 
 
 def main():
