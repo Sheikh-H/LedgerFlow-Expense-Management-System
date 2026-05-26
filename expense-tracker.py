@@ -235,6 +235,22 @@ def view_all():
         print(f"Amount: £{row['Amount']}")
 
 
+def export_to_csv(expenses):
+    # This function needs fixing, the parameters passed into it should be what is used from the view function. After someone views their expenses using a certain filter, they should be presented with the option to save to file for that result.
+    option = (
+        input("Would you like to export this result to a csv file? ").lower().strip()
+    )
+    if option == "yes":
+        fieldnames = ["ID", "Date", "Description", "Amount", "Category"]
+        with open("filtered_expense.csv", "w") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            for expense in expenses:
+                writer.writerows(expense)
+    else:
+        exit()
+
+
 def view_by(
     expense_id=None,
     description=None,
@@ -245,13 +261,13 @@ def view_by(
     date=None,
 ):
     DATA = load_file()
+    # After this function is up and working, I would like for this to be using multiple filters to load different results. There was a method provided by AI, but I would like to make it on my own way.
     if expense_id is not None:
         print("Here is the expenses with that ID:")
         time.sleep(2)
         for row in DATA:
-            if row["ID"] == expense_id:
+            if int(row["ID"]) == expense_id:
                 print(row)
-                break
     if description is not None:
         print("Here is the expenses with that description:")
         time.sleep(2)
@@ -296,13 +312,13 @@ def view_by(
                 print(row)
     if month is not None:
         if month.isdigit():
-            month_num= int(month)
-            month_name = datetime(2026, month_num, 1).strftime("%B") # Used AI for this
+            month_num = int(month)
+            month_name = datetime(2026, month_num, 1).strftime("%B")  # Used AI for this
             formatted_month = datetime.strptime(month, "%m").month
             print(f"Here is all the expenses made in '{month_name}':")
             time.sleep(2)
             for row in DATA:
-                if datetime.strptime(row['Date'], "%Y-%m-%d").month == formatted_month:
+                if datetime.strptime(row["Date"], "%Y-%m-%d").month == formatted_month:
                     print(row)
         else:
             if len(month) > 3:
@@ -310,17 +326,21 @@ def view_by(
                 formatted_month = datetime.strptime(month, "%B").month
                 print(f"Here is all the expenses made in '{month}':")
                 for row in DATA:
-                    if datetime.strptime(row['Date'], "%Y-%m-%d").month == formatted_month:
+                    if (
+                        datetime.strptime(row["Date"], "%Y-%m-%d").month
+                        == formatted_month
+                    ):
                         print(row)
             if len(month) == 3:
                 month_num = datetime(2026, month, 1).strftime("%m")
-                formatted_month = datetime.strptime(month, "%B").month
+                formatted_month = datetime.strptime(month, "%b").month
                 print(f"Here is all the expenses made in '{formatted_month}':")
                 for row in DATA:
-                    if datetime.strptime(row['Date'], "%Y-%m-%d").month == formatted_month:
+                    if (
+                        datetime.strptime(row["Date"], "%Y-%m-%d").month
+                        == formatted_month
+                    ):
                         print(row)
-                
-
 
 
 def main():
