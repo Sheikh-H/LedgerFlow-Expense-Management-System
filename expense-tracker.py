@@ -7,7 +7,6 @@ import argparse
 
 # Global Variables:
 FILE = "expenses.csv"
-NOW = str(datetime.now().replace(microsecond=0))
 
 
 def on_load():
@@ -124,7 +123,7 @@ def delete_expense(expense_id, description):
     if expense_id != None:
         for i, row in enumerate(DATA):
             if int(row["ID"]) == expense_id:
-                expense.append(row)
+                expense.append(row.copy())
                 del DATA[i]
                 break
     if description != None:
@@ -135,7 +134,7 @@ def delete_expense(expense_id, description):
         if counter == 1:
             for i, row in enumerate(DATA):
                 if str(row["Description"]).lower() == description.lower():
-                    expense.append(row)
+                    expense.append(row.copy())
                     del DATA[i]
                     break
         else:
@@ -160,16 +159,16 @@ def delete_expense(expense_id, description):
 def update_expense(
     expense_id, description, new_description, new_amount, new_date, new_category
 ):
+    expense_list = []
     DATA = load_file()
-    expense = []
-    if expense_id and description:
+    if expense_id is not None and description is not None:
         error_messages(
             "Please use either expense id or expense description to search, refer to manual [-h]"
         )
-    if expense_id != None:
+    if expense_id is not None:
         for i, row in enumerate(DATA):
             if int(row["ID"]) == expense_id:
-                expense.append(row)
+                expense_list.append(row.copy())
                 if new_description != None:
                     print(row["Description"])
                     row["Description"] = new_description
@@ -189,14 +188,14 @@ def update_expense(
                 else:
                     row["Category"] = row["Category"]
                 break
-    if description != None:
+    if description is not None:
         count = 0
         for row in DATA:
             if row["Description"].lower().strip() == description.lower().strip():
                 count += 1
         if count > 1:
             print(
-                "You have more than one expense with the same description, please use expense id"
+                f"You have {count} expenses with the same description, please use expense id"
             )
             print("Here is a list of all the expenses with the same description:")
             for row in DATA:
@@ -208,11 +207,8 @@ def update_expense(
                     print(f"Amount: £{row['Amount']}")
         if count == 1:
             for i, row in enumerate(DATA):
-                if (
-                    row["Description"].lower().strip()
-                    == description.lower().strip()
-                ):
-                    expense.append(row)
+                if row["Description"].lower().strip() == description.lower().strip():
+                    expense_list.append(row.copy())
                     if new_description != None:
                         row["Description"] = new_description.strip()
                     if new_amount != None:
@@ -224,8 +220,8 @@ def update_expense(
                         row["Date"] = formatted_date
                     break
     save_data(DATA, FILE)
-    if expense:
-        error_messages(f"Expense '{expense[0]['Description']}' has been updated!")
+    if expense_list:
+        error_messages(f"Expense '{expense_list[0]['Description']}' has been updated!")
     else:
         error_messages("Unable to update this expense, please try again!")
 
@@ -282,7 +278,7 @@ if __name__ == "__main__":
 # Add an expense
 # Delete an expense
 # View all expenses
-# Veiw expenses for a certain month
+# View expenses for a certain month
 # Add expense categories and filter by categories for view
 # Export a filter output as csv file
 # Export expenses as csv output
