@@ -245,7 +245,9 @@ def export_to_csv(expenses):
         with open("filtered_expense.csv", "w") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
-            for key, value in enumerate(expenses):
+            for key, value in enumerate(
+                expenses
+            ):  # When taking my code through AI it suggested that I shouldn't enumerate and separate key, value pairs and store like this. But my original version did have that method and it didn't work which is why i opted to use this method and it worked fine. This is my code nevertheless and would like to keep it so anyone else can view and criticise and help me improve.
                 writer.writerow(value)
     else:
         exit()
@@ -334,7 +336,7 @@ def view_by(
                 if datetime.strptime(row["Date"], "%Y-%m-%d").month == formatted_month:
                     print(row)
                     results.append(row)
-            export_to_csv(row)
+            export_to_csv(results)
 
         else:
             if len(month) > 3:
