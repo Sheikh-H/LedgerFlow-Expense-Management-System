@@ -427,5 +427,3 @@ SOFTWARE.
 ---
 
 <h2 align="center">⭐ If you like this project, please give it a star on GitHub!</h2>
-
-<h2 align="center">⭐ If you like this project, please give it a star on GitHub!</h2>
