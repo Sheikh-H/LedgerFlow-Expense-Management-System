@@ -10,11 +10,11 @@
 <h2>📘 Project Overview</h2>
 
 <p>
-<b>LedgerFlow</b> is a fully interactive command-line expense tracking system developed as a native Python solution for the <b><a href="https://roadmap.sh/projects/expense-tracker" target="_blank">Expense Tracker</a></b> project challenge on <b>roadmap.sh</b>.
+<b>Expense Management System CLI</b> is a fully interactive command-line expense tracking system developed as a native Python solution for the <b><a href="https://roadmap.sh/projects/expense-tracker" target="_blank">Expense Tracker</a></b> project challenge on <b>roadmap.sh</b>.
 </p>
 
 <p>
-The application was engineered to simulate a lightweight personal finance management environment directly inside the terminal. Rather than relying on databases or third-party financial frameworks, LedgerFlow intentionally utilises structured CSV persistence to reinforce practical understanding of local file operations, record management, and transactional state handling.
+The application was engineered to simulate a lightweight personal finance management environment directly inside the terminal. Rather than relying on databases or third-party financial frameworks, Expense Management System CLI intentionally utilises structured CSV persistence to reinforce practical understanding of local file operations, record management, and transactional state handling.
 </p>
 
 <p>
@@ -26,7 +26,7 @@ Built with an extensible architecture and powered by Python's <code>argparse</co
 <h2>🧠 Architectural Philosophy & Design Intent</h2>
 
 <p>
-LedgerFlow was intentionally designed around a <b>local-first persistence model</b>, meaning every financial transaction is stored directly inside a human-readable CSV datastore rather than abstracted behind external database engines.
+Expense Management System CLI was intentionally designed around a <b>local-first persistence model</b>, meaning every financial transaction is stored directly inside a human-readable CSV datastore rather than abstracted behind external database engines.
 </p>
 
 <p>
@@ -60,24 +60,24 @@ This design philosophy was implemented for several deliberate technical and educ
 <h2>⚡ Core Features & Project Enhancements</h2>
 
 <p>
-Although the application fulfils the baseline roadmap.sh requirements, LedgerFlow introduces a significantly expanded command architecture and multiple advanced behaviours:
+Although the application fulfils the baseline roadmap.sh requirements, Expense Management System CLI introduces a significantly expanded command architecture and multiple advanced behaviours:
 </p>
 
-| Capability          | Standard Requirements              | LedgerFlow Implementation                                                                                              |
-| ------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Expense Persistence | Store expenses locally             | Structured CSV-backed datastore with automatic file creation and persistent financial record indexing                  |
+| Capability          | Standard Requirements              | Expense Management System CLI Implementation |
+| ------------------- | ---------------------------------- | --------------------------------------------- |
+| Expense Persistence | Store expenses locally             | Structured CSV-backed datastore with automatic file creation and persistent financial record indexing |
 | Command Processing  | Basic terminal argument handling   | Full argparse integration with subcommands, validation pipelines, mutually exclusive groups, and structured help menus |
-| Expense Querying    | Simple record viewing              | Granular temporal filtering by date, month, day, year, category, ID, or description                                    |
-| Export Handling     | Display results to console         | Dynamic CSV export pipeline saving filtered results into structured reports                                            |
-| Error Recovery      | Basic failures terminate execution | Structured terminal error sequencing with staged prompts and safe shutdowns                                            |
-| Record Mutability   | Update expense values              | Dual-mode mutation engine via ID or description lookup                                                                 |
+| Expense Querying    | Simple record viewing              | Granular temporal filtering by date, month, day, year, category, ID, or description |
+| Export Handling     | Display results to console         | Dynamic CSV export pipeline saving filtered results into structured reports |
+| Error Recovery      | Basic failures terminate execution | Structured terminal error sequencing with staged prompts and safe shutdowns |
+| Record Mutability   | Update expense values              | Dual-mode mutation engine via ID or description lookup |
 
 ---
 
 <h2>🧩 Folder Structure</h2>
 
 <pre>
-LedgerFlow/
+Expense Management System CLI/
 │
 ├── expense-tracker.py   # Main CLI application and processing engine
 ├── expenses.csv         # Persistent expense datastore
@@ -93,11 +93,11 @@ LedgerFlow/
   <li>Ensure you have <b>Python 3.8 or above</b> installed locally.</li>
 
   <li>Clone or download this repository:
-    <pre>git clone https://github.com/Sheikh-H/LedgerFlow.git</pre>
+    <pre>git clone https://github.com/Sheikh-H/Expense-Management-System-CLI.git</pre>
   </li>
 
   <li>Navigate into the project directory:
-    <pre>cd LedgerFlow</pre>
+    <pre>cd Expense-Management-System-CLI</pre>
   </li>
 
   <li>No external dependencies are required — the project operates entirely using Python standard libraries.</li>
@@ -110,7 +110,7 @@ LedgerFlow/
 <h2>🖥️ Detailed Usage & Command Manual</h2>
 
 <p>
-LedgerFlow operates through a modular subcommand architecture powered by <code>argparse</code>.
+Expense Management System CLI operates through a modular subcommand architecture powered by <code>argparse</code>.
 </p>
 
 ---
